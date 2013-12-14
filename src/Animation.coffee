@@ -8,4 +8,10 @@ class Animation
 		console.log frames
 
 	getFrame: (time) ->
-		return @frames[Math.floor(time * 2) % @frames.length]
+		return @frames[Math.floor(time * 8) % @frames.length]
+
+	width: ->
+		return @frames[0].width
+
+	height: ->
+		return @frames[0].height

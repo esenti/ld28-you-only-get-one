@@ -1,10 +1,8 @@
 class Enemy extends Rect
-	constructor: (@x, @y) ->
+	constructor: (@x, @y, @animation) ->
 		@hp = 30
 		@speed = 170
-		@animation = new Animation('spider', 1)
 		@alive = 0
-		@toPlayer = 45
 
 		@deadSprite = new Image()
 		@deadSprite.src = 'assets/img/spider_dead.png'
@@ -52,10 +50,18 @@ class Enemy extends Rect
 		ctx.rotate(@toPlayer.angle() * Math.PI / 180);
 
 		ctx.translate(-camera.transformX(@x) - 16, -camera.transformY(@y) - 16)
+
 		ctx.drawImage(@animation.getFrame(@alive), camera.transformX(@x), camera.transformY(@y))
+
+		if @hurt
+			@hurt = false
+			# ctx.beginPath()
+			# ctx.arc(camera.transformX(@x + 16), camera.transformY(@y + 16), 4, 0, Math.PI * 2)
+			# ctx.fill()
 
 		ctx.restore()
 
 	hit: ->
+		@hurt = true
 		@hp -= 2
 		return true

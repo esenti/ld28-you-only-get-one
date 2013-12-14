@@ -21,6 +21,9 @@ mouse =
 		y: 0
 
 
+nextEnemy = 0
+
+
 addEventListener("keydown", (e) ->
 	keysDown[e.keyCode] = true
 	console.log(e.keyCode)
@@ -81,6 +84,23 @@ update = ->
 		frames = 0
 		sec = 0
 
+	if player.hp <= 0
+		ctx.font = '120px Visitor'
+		ctx.fillText("Game over", 300, 300)
+		return
+
+	nextEnemy -= delta
+	if nextEnemy < 0
+		nextEnemy = 2
+		where = Math.random()
+		if where < 0.5
+			x = player.x + (Math.random() - 0.5) * c.width * 1.5
+			y = player.y + if Math.random() < 0.5 then c.height + 100 else -c.height - 100
+		else
+			x = player.x + if Math.random() < 0.5 then c.width + 100 else -c.width - 100
+			y = player.y + (Math.random() - 0.5) * c.height * 1.5
+		enemies.push(new Enemy(x, y, new Animation('spider', 3)))
+
 	newPlayer = {x: player.x, y: player.y}
 
 	if keysDown[65]
@@ -104,7 +124,7 @@ update = ->
 
 
 	if keysDown[69]
-		enemies.push(new Enemy(player.x + 100, player.y - 100))
+		enemies.push(new Enemy(player.x + 100, player.y - 100, new Animation('spider', 3)))
 
 	camera.x = player.x + 16
 	camera.y = player.y + 16
@@ -173,8 +193,15 @@ draw = (delta) ->
 	ctx.fillRect(0, 0, c.width, c.height)
 
 
+	ctx.font = '16px Visitor'
 	ctx.fillStyle = 'white'
 	ctx.fillText(fps, 10, 10)
+
+	ctx.font = '22px Visitor'
+	ctx.fillText("#{player.hp} HP", 20, 20)
+	ctx.fillText("#{player.exp} XP", 20, 40)
+
+
 	ctx.restore()
 
 
