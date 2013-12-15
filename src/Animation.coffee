@@ -5,8 +5,6 @@ class Animation
 			@frames[i] = new Image()
 			@frames[i].src = "assets/img/#{@name}_#{i}.png"
 
-		console.log frames
-
 	getFrame: (time) ->
 		return @frames[Math.floor(time * 8) % @frames.length]
 

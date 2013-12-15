@@ -2,10 +2,13 @@ class Player extends Rect
 
 	constructor: (@x, @y) ->
 		@hp = 30
+		@maxHp = 30
 		@exp = 0
+		@expToLevel = 1000
 		@speed = 100
 		@animation = new Animation('player', 2)
 		@alive = 0
+		@leveled = false
 		super(@x, @y, 32, 32)
 
 	update: (delta) ->
@@ -16,6 +19,12 @@ class Player extends Rect
 
 		@vec = new Vector(mouse.pos.x - screenX, mouse.pos.y - screenY)
 		@vec.normalize()
+
+		@leveled = false
+		if @exp >= @expToLevel
+			@leveled = true
+			@exp = @exp - @expToLevel
+			@expToLevel = @expToLevel * 1.1
 
 	hit: ->
 		@hp -= 1

@@ -12,22 +12,22 @@ class Enemy extends Rect
 
 		if @hp <= 0
 			@remove = true
-			bodies.push(new Body(@x, @y, @deadSprite))
-			player.exp += 100
+			window.bodies.push(new Body(@x, @y, @deadSprite))
+			window.player.exp += 1200
 
 		@alive += delta
 
-		if @collidesWith(player.x, player.y, 32, 32)
-			player.hit()
+		if @collidesWith(window.player.x, window.player.y, 32, 32)
+			window.player.hit()
 			return
 
-		@toPlayer = new Vector(player.x - @x, player.y - @y)
+		@toPlayer = new Vector(window.player.x - @x, window.player.y - @y)
 		@toPlayer.normalize()
 
 		newX = @x + @toPlayer.x * delta * @speed
 		newY = @y + @toPlayer.y * delta * @speed
 
-		for enemy in enemies
+		for enemy in window.enemies
 			if enemy == this
 				continue
 

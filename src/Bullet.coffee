@@ -9,7 +9,7 @@ class Bullet extends Rect
 		@.x += @.dx * delta * @speed
 		@.y += @.dy * delta * @speed
 
-		for enemy in enemies
+		for enemy in window.enemies
 			if @collidesWithRect(enemy)
 				if enemy.hit()
 					@remove = true
