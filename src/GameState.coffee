@@ -34,7 +34,7 @@ class GameState extends State
 
 		if window.player.hp <= 0
 			if not @gameover
-				sounds.gameOver.play()
+				resourceManager.getSound('gameover.wav').play()
 			@gameover = true
 
 			if mouse.click
@@ -114,7 +114,7 @@ class GameState extends State
 		if mouse.down
 			if player.toShoot <= 0
 
-				sounds.shoot.play()
+				resourceManager.getSound('shoot.wav').play()
 				player.toShoot = 1 / player.fireRate
 				vec = new Vector(10, 0)
 				vec.rotate(player.vec.angle())
@@ -147,6 +147,8 @@ class GameState extends State
 		window.player.update(delta)
 
 	draw: (ctx) ->
+
+		dirt = resourceManager.getImage('dirt.png')
 		for i in [-15..15]
 			for j in [-10..10]
 				ctx.drawImage(dirt, camera.transformX(i * dirt.width), camera.transformY(j * dirt.height))
@@ -226,14 +228,16 @@ class GameState extends State
 
 			ctx.fillStyle = if @powerupRects[0].hl then 'rgba(155, 155, 155, 0.9)' else 'rgba(155, 155, 155, 0.4)'
 			ctx.fillRect(@powerupRects[0].x, @powerupRects[0].y, @powerupRects[0].width, @powerupRects[0].height)
-			ctx.drawImage(@powerups[0].img, c.width / 2 - 128 - 16 - 60, c.height / 2 - 64)
+			ctx.drawImage(resourceManager.getImage(@powerups[0].sprite), c.width / 2 - 128 - 16 - 60, c.height / 2 - 64)
 			ctx.fillStyle = 'white'
-			ctx.fillText(@powerups[0].name, c.width / 2 - 64 - 16 - 60, c.height / 2 + 128)
+			ctx.textAlign = 'right'
+			ctx.fillText(@powerups[0].name, c.width / 2 - 60, c.height / 2 + 128)
 
 			ctx.fillStyle = if @powerupRects[1].hl then 'rgba(155, 155, 155, 0.9)' else 'rgba(155, 155, 155, 0.4)'
 			ctx.fillRect(@powerupRects[1].x, @powerupRects[1].y, @powerupRects[1].width, @powerupRects[1].height)
-			ctx.drawImage(@powerups[1].img, c.width / 2 + 16 + 60, c.height / 2 - 64)
+			ctx.drawImage(resourceManager.getImage(@powerups[1].sprite), c.width / 2 + 16 + 60, c.height / 2 - 64)
 			ctx.fillStyle = 'white'
-			ctx.fillText(@powerups[1].name, c.width / 2 + 16 + 60 + 64, c.height / 2 + 128)
+			ctx.textAlign = 'left'
+			ctx.fillText(@powerups[1].name, c.width / 2 + 60, c.height / 2 + 128)
 
 		ctx.restore()

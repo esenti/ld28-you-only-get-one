@@ -19,7 +19,7 @@ class Enemy extends Rect
 			@toHit -= delta
 
 		if @hp <= 0
-			sounds.enemyDead.play()
+			resourceManager.getSound('enemy_dead.wav').play()
 			@remove = true
 			window.bodies.push(new Body(@x, @y, @deadSprite))
 			window.player.exp += 100
@@ -76,7 +76,7 @@ class Enemy extends Rect
 		@hurt = true
 		@hp -= power
 		if @hp > 0
-			sounds.enemyHurt.play()
+			resourceManager.getSound('enemy_hurt.wav').play()
 			window.bodies.push(new Body(@x + 12, @y + 12, @bloodSprite))
 
 		return true

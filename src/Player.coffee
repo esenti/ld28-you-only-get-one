@@ -31,7 +31,7 @@ class Player extends Rect
 
 		@leveled = false
 		if @exp >= @expToLevel
-			sounds.levelUp.play()
+			resourceManager.getSound('levelup.wav').play()
 			@leveled = true
 			@exp = @exp - @expToLevel
 			@expToLevel = @expToLevel + 100
@@ -42,7 +42,7 @@ class Player extends Rect
 			hook(this, delta)
 
 	hit: (power) ->
-		sounds.playerHurt.play()
+		resourceManager.getSound('player_hurt.wav').play()
 		@hp -= power
 
 	draw: (ctx) ->

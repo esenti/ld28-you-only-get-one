@@ -25,14 +25,14 @@ mouse =
 window.powerups = [
 	{
 		name: '+10 max HP'
-		sprite: 'heart'
+		sprite: 'heart.png'
 		use: ->
 			window.player.maxHp = window.player.maxHp + 10
 			window.player.hp = window.player.maxHp
 	},
 	{
 		name: 'HP regen'
-		sprite: 'heart'
+		sprite: 'heart.png'
 		use: ->
 			toRegen = 10
 
@@ -45,56 +45,42 @@ window.powerups = [
 	},
 	{
 		name: '+20% speed'
-		sprite: 'speed'
+		sprite: 'speed.png'
 		use: ->
 			window.player.speed = window.player.speed * 1.2
 	},
 	{
 		name: '2x fire rate'
-		sprite: 'speed'
+		sprite: 'speed.png'
 		use: ->
 			window.player.fireRate = window.player.fireRate * 2
 	},
 	{
 		name: 'stronger bullets'
-		sprite: 'speed'
+		sprite: 'speed.png'
 		use: ->
 			window.player.bulletPower = window.player.bulletPower * 2
 	},
 	{
 		name: 'faster bullets'
-		sprite: 'speed'
+		sprite: 'speed.png'
 		use: ->
 			window.player.bulletSpeed = window.player.bulletSpeed * 2
 	},
 	{
 		name: 'longer range'
-		sprite: 'speed'
+		sprite: 'speed.png'
 		use: ->
 			window.player.bulletTtl = window.player.bulletTtl* 2
 	},
 	{
 		name: 'better sight'
-		sprite: 'eye'
+		sprite: 'eye.png'
 		use: ->
 			window.player.sight = window.player.sight * 1.5
 			updateGradient()
 	},
 ]
-
-sounds =
-	shoot: new Audio("assets/sound/shoot.wav")
-	enemyHurt: new Audio("assets/sound/enemy_hurt.wav")
-	playerHurt: new Audio("assets/sound/player_hurt.wav")
-	levelUp: new Audio("assets/sound/levelup.wav")
-	gameOver: new Audio("assets/sound/gameover.wav")
-	enemyDead: new Audio("assets/sound/enemy_dead.wav")
-	enemyShoot: new Audio("assets/sound/enemy_shoot.wav")
-
-for powerup in window.powerups
-	powerup.img = new Image()
-	powerup.img.src = "assets/img/#{powerup.sprite}.png"
-
 
 addEventListener("keydown", (e) ->
 	keysDown[e.keyCode] = true
@@ -121,13 +107,12 @@ addEventListener("click", (e) ->
 	mouse.click = true
 )
 
-
-dirt = new Image()
-dirt.src = 'assets/img/dirt.png'
+window.resourceManager = new ResourceManager()
 
 window.menuState = new MenuState()
 window.gameState = new GameState()
-window.currentState = window.menuState
+window.loadingState = new LoadingState()
+window.currentState = window.loadingState
 window.nextState = null
 
 currentState.enter()
