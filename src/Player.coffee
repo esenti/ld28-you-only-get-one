@@ -16,6 +16,7 @@ class Player extends Rect
 		@bulletTtl = 1
 		@bulletPower = 3
 		@bulletSpeed = 150
+		@sight = 150
 		super(@x, @y, 32, 32)
 
 	update: (delta) ->

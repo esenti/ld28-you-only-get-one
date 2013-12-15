@@ -2,7 +2,7 @@ class Bullet extends Rect
 	constructor: (@x, @y, @dx, @dy) ->
 		@ttl = player.bulletTtl
 		@speed = player.bulletSpeed
-		super(@x, @y, 10, 10)
+		super(@x, @y, 5, 5)
 
 	update: (delta) ->
 

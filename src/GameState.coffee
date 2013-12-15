@@ -1,6 +1,7 @@
 class GameState extends State
 
 	constructor: ->
+		window.player = new Player(0, 0)
 
 	enter: ->
 		@nextEnemy = 0
@@ -32,7 +33,8 @@ class GameState extends State
 	update: (delta) ->
 
 		if window.player.hp <= 0
-			sounds.gameOver.play()
+			if not @gameover
+				sounds.gameOver.play()
 			@gameover = true
 
 			if mouse.click
@@ -72,15 +74,19 @@ class GameState extends State
 
 		@nextEnemy -= delta
 		if @nextEnemy < 0
-			@nextEnemy = 2 - player.level * 0.15
-			where = Math.random()
-			if where < 0.5
+			@nextEnemy = 3 - player.level * 0.15
+
+			if Math.random() > 0.5
 				x = player.x + (Math.random() - 0.5) * c.width * 1.5
 				y = player.y + if Math.random() < 0.5 then c.height + 100 else -c.height - 100
 			else
 				x = player.x + if Math.random() < 0.5 then c.width + 100 else -c.width - 100
 				y = player.y + (Math.random() - 0.5) * c.height * 1.5
-			window.enemies.push(new Enemy(x, y, new Animation('spider', 3)))
+
+			if Math.random() > 0.3
+				window.enemies.push(new Enemy(x, y, new Animation('spider', 3)))
+			else
+				window.enemies.push(new ShootingEnemy(x, y, new Animation('shooter', 3)))
 
 		newPlayer = {x: player.x, y: player.y}
 
@@ -101,9 +107,6 @@ class GameState extends State
 
 		window.player.x = newPlayer.x
 		window.player.y = newPlayer.y
-
-		if keysDown[69]
-			enemies.push(new Enemy(player.x + 100, player.y - 100, new Animation('spider', 3)))
 
 		camera.x = player.x + 16
 		camera.y = player.y + 16

@@ -67,6 +67,19 @@ window.powerups = [
 		use: ->
 			window.player.bulletSpeed = window.player.bulletSpeed * 2
 	},
+	{
+		name: 'longer range'
+		sprite: 'speed'
+		use: ->
+			window.player.bulletTtl = window.player.bulletTtl* 2
+	},
+	{
+		name: 'better sight'
+		sprite: 'eye'
+		use: ->
+			window.player.sight = window.player.sight * 1.5
+			updateGradient()
+	},
 ]
 
 sounds =
@@ -76,6 +89,7 @@ sounds =
 	levelUp: new Audio("assets/sound/levelup.wav")
 	gameOver: new Audio("assets/sound/gameover.wav")
 	enemyDead: new Audio("assets/sound/enemy_dead.wav")
+	enemyShoot: new Audio("assets/sound/enemy_shoot.wav")
 
 for powerup in window.powerups
 	powerup.img = new Image()
@@ -107,27 +121,9 @@ addEventListener("click", (e) ->
 	mouse.click = true
 )
 
-addEventListener('resize', ->
-	c.width = window.innerWidth
-	c.height = window.innerHeight
-
-	window.grd = ctx.createRadialGradient(c.width / 2, c.height / 2, 300, c.width / 2, c.height / 2, 600)
-
-	window.grd.addColorStop(0, 'rgba(0, 0, 0, 0)')
-	window.grd.addColorStop(1, 'rgba(0, 0, 0, 0.9)')
-
-	draw(ctx)
-
-, false)
-
 
 dirt = new Image()
 dirt.src = 'assets/img/dirt.png'
-
-window.grd = ctx.createRadialGradient(c.width / 2, c.height / 2, 300, c.width / 2, c.height / 2, 600)
-
-window.grd.addColorStop(0, 'rgba(0, 0, 0, 0)')
-window.grd.addColorStop(1, 'rgba(0, 0, 0, 0.9)')
 
 window.menuState = new MenuState()
 window.gameState = new GameState()
@@ -135,6 +131,25 @@ window.currentState = window.menuState
 window.nextState = null
 
 currentState.enter()
+
+addEventListener('resize', ->
+	c.width = window.innerWidth
+	c.height = window.innerHeight
+
+	updateGradient()
+
+	draw(ctx)
+
+, false)
+
+updateGradient = ->
+
+	window.grd = ctx.createRadialGradient(c.width / 2, c.height / 2, window.player.sight, c.width / 2, c.height / 2, window.player.sight + 300)
+
+	window.grd.addColorStop(0, 'rgba(0, 0, 0, 0)')
+	window.grd.addColorStop(1, 'rgba(0, 0, 0, 1)')
+
+updateGradient()
 
 camera =
 	x: 0
@@ -180,9 +195,9 @@ draw = (delta) ->
 
 	currentState.draw(ctx)
 
-	ctx.font = '16px Visitor'
-	ctx.fillStyle = 'white'
-	ctx.fillText(fps, 10, 10)
+	ctx.font = '46px Visitor'
+	ctx.fillStyle = '#aaaaaa'
+	ctx.fillText(fps, c.width - 80, 40)
 
 	ctx.restore()
 

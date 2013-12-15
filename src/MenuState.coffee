@@ -14,7 +14,7 @@ class MenuState extends State
 
 		ctx.textAlign = 'center'
 		ctx.textBaseline = 'middle'
-		ctx.font = '45px Visitor'
+		ctx.font = '52px Visitor'
 		ctx.fillText("Start", c.width / 2, c.height / 2)
 
 		ctx.restore()
