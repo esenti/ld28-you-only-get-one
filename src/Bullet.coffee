@@ -1,7 +1,7 @@
 class Bullet extends Rect
 	constructor: (@x, @y, @dx, @dy) ->
-		@ttl = 2
-		@speed = 200
+		@ttl = player.bulletTtl
+		@speed = player.bulletSpeed
 		super(@x, @y, 10, 10)
 
 	update: (delta) ->
@@ -11,7 +11,7 @@ class Bullet extends Rect
 
 		for enemy in window.enemies
 			if @collidesWithRect(enemy)
-				if enemy.hit()
+				if enemy.hit(player.bulletPower)
 					@remove = true
 					break
 

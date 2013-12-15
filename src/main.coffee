@@ -24,15 +24,58 @@ mouse =
 
 window.powerups = [
 	{
-		name: 'atest'
+		name: '+10 max HP'
 		sprite: 'heart'
-
+		use: ->
+			window.player.maxHp = window.player.maxHp + 10
+			window.player.hp = window.player.maxHp
 	},
 	{
-		name: 'another test'
+		name: 'HP regen'
 		sprite: 'heart'
-	}
+		use: ->
+			toRegen = 10
+
+			window.player.hooks.push((self, delta) ->
+				toRegen -= delta
+				if toRegen <= 0 and self.hp < self.maxHp
+					toRegen = 10
+					self.hp += 1
+			)
+	},
+	{
+		name: '+20% speed'
+		sprite: 'speed'
+		use: ->
+			window.player.speed = window.player.speed * 1.2
+	},
+	{
+		name: '2x fire rate'
+		sprite: 'speed'
+		use: ->
+			window.player.fireRate = window.player.fireRate * 2
+	},
+	{
+		name: 'stronger bullets'
+		sprite: 'speed'
+		use: ->
+			window.player.bulletPower = window.player.bulletPower * 2
+	},
+	{
+		name: 'faster bullets'
+		sprite: 'speed'
+		use: ->
+			window.player.bulletSpeed = window.player.bulletSpeed * 2
+	},
 ]
+
+sounds =
+	shoot: new Audio("assets/sound/shoot.wav")
+	enemyHurt: new Audio("assets/sound/enemy_hurt.wav")
+	playerHurt: new Audio("assets/sound/player_hurt.wav")
+	levelUp: new Audio("assets/sound/levelup.wav")
+	gameOver: new Audio("assets/sound/gameover.wav")
+	enemyDead: new Audio("assets/sound/enemy_dead.wav")
 
 for powerup in window.powerups
 	powerup.img = new Image()
@@ -68,6 +111,11 @@ addEventListener('resize', ->
 	c.width = window.innerWidth
 	c.height = window.innerHeight
 
+	window.grd = ctx.createRadialGradient(c.width / 2, c.height / 2, 300, c.width / 2, c.height / 2, 600)
+
+	window.grd.addColorStop(0, 'rgba(0, 0, 0, 0)')
+	window.grd.addColorStop(1, 'rgba(0, 0, 0, 0.9)')
+
 	draw(ctx)
 
 , false)
@@ -76,10 +124,10 @@ addEventListener('resize', ->
 dirt = new Image()
 dirt.src = 'assets/img/dirt.png'
 
-grd = ctx.createRadialGradient(c.width / 2, c.height / 2, 300, c.width / 2, c.height / 2, 600)
+window.grd = ctx.createRadialGradient(c.width / 2, c.height / 2, 300, c.width / 2, c.height / 2, 600)
 
-grd.addColorStop(0, 'rgba(0, 0, 0, 0)')
-grd.addColorStop(1, 'rgba(0, 0, 0, 0.9)')
+window.grd.addColorStop(0, 'rgba(0, 0, 0, 0)')
+window.grd.addColorStop(1, 'rgba(0, 0, 0, 0.9)')
 
 window.menuState = new MenuState()
 window.gameState = new GameState()

@@ -1,24 +1,35 @@
 class Enemy extends Rect
 	constructor: (@x, @y, @animation) ->
-		@hp = 30
-		@speed = 170
+		@hp = 15
+		@speed = 170 + player.level * 10
 		@alive = 0
+		@toHit = 0
+		@hitPower = 1 + Math.floor(player.level / 4)
 
 		@deadSprite = new Image()
 		@deadSprite.src = 'assets/img/spider_dead.png'
+
+		@bloodSprite = new Image()
+		@bloodSprite.src = 'assets/img/spider_blood.png'
 		super(@x, @y, 32, 32)
 
 	update: (delta) ->
 
+		if @toHit > 0
+			@toHit -= delta
+
 		if @hp <= 0
+			sounds.enemyDead.play()
 			@remove = true
 			window.bodies.push(new Body(@x, @y, @deadSprite))
-			window.player.exp += 1200
+			window.player.exp += 100
 
 		@alive += delta
 
 		if @collidesWith(window.player.x, window.player.y, 32, 32)
-			window.player.hit()
+			if @toHit <= 0
+				@toHit = 0.5
+				window.player.hit(@hitPower)
 			return
 
 		@toPlayer = new Vector(window.player.x - @x, window.player.y - @y)
@@ -61,7 +72,11 @@ class Enemy extends Rect
 
 		ctx.restore()
 
-	hit: ->
+	hit: (power) ->
 		@hurt = true
-		@hp -= 2
+		@hp -= power
+		if @hp > 0
+			sounds.enemyHurt.play()
+			window.bodies.push(new Body(@x + 12, @y + 12, @bloodSprite))
+
 		return true

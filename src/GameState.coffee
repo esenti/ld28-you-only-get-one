@@ -32,6 +32,7 @@ class GameState extends State
 	update: (delta) ->
 
 		if window.player.hp <= 0
+			sounds.gameOver.play()
 			@gameover = true
 
 			if mouse.click
@@ -54,9 +55,10 @@ class GameState extends State
 
 			if @powerups.length > 0
 				ret = true
-				for rect in @powerupRects
+				for rect, i in @powerupRects
 					if mouse.pos.x > rect.x and mouse.pos.x < rect.x + rect.width and mouse.pos.y > rect.y and mouse.pos.y < rect.y + rect.height
 						if mouse.click
+							@powerups[i].use()
 							ret = false
 							break
 						rect.hl = true
@@ -70,7 +72,7 @@ class GameState extends State
 
 		@nextEnemy -= delta
 		if @nextEnemy < 0
-			@nextEnemy = 2
+			@nextEnemy = 2 - player.level * 0.15
 			where = Math.random()
 			if where < 0.5
 				x = player.x + (Math.random() - 0.5) * c.width * 1.5
@@ -100,8 +102,6 @@ class GameState extends State
 		window.player.x = newPlayer.x
 		window.player.y = newPlayer.y
 
-
-
 		if keysDown[69]
 			enemies.push(new Enemy(player.x + 100, player.y - 100, new Animation('spider', 3)))
 
@@ -109,9 +109,13 @@ class GameState extends State
 		camera.y = player.y + 16
 
 		if mouse.down
-			vec = new Vector(10, 0)
-			vec.rotate(player.vec.angle())
-			bullets.push(new Bullet(player.x + 16 + vec.x, player.y + 16 + vec.y, player.vec.x, player.vec.y))
+			if player.toShoot <= 0
+
+				sounds.shoot.play()
+				player.toShoot = 1 / player.fireRate
+				vec = new Vector(10, 0)
+				vec.rotate(player.vec.angle())
+				bullets.push(new Bullet(player.x + 16 + vec.x, player.y + 16 + vec.y, player.vec.x, player.vec.y))
 
 
 		i = 0
@@ -162,22 +166,42 @@ class GameState extends State
 		ctx.fillRect(0, 0, c.width, c.height)
 
 		ctx.fillStyle = 'white'
+		ctx.textAlign = 'left'
 		ctx.font = '22px Visitor'
 		ctx.fillText("HP", 20, 20)
 		ctx.fillStyle = '#888888'
-		ctx.fillRect(50, 10, 100, 10)
+		ctx.fillRect(50, 10, 200, 10)
 		ctx.fillStyle = 'white'
-		ctx.fillRect(50, 10, window.player.hp / window.player.maxHp * 100, 10)
+		ctx.fillRect(50, 10, window.player.hp / window.player.maxHp * 200, 10)
+		ctx.fillStyle = '#333333'
+		ctx.font = '16px Visitor'
+		ctx.textAlign = 'center'
+		ctx.fillText("#{player.hp} / #{player.maxHp}", 150, 19)
+
+		ctx.textAlign = 'left'
+		ctx.font = '22px Visitor'
+		ctx.fillStyle = 'white'
 		ctx.fillText("XP", 20, 40)
 		ctx.fillStyle = '#888888'
-		ctx.fillRect(50, 30, 100, 10)
+		ctx.fillRect(50, 30, 200, 10)
 		ctx.fillStyle = 'white'
-		ctx.fillRect(50, 30, window.player.exp / window.player.expToLevel * 100, 10)
+		ctx.fillRect(50, 30, window.player.exp / window.player.expToLevel * 200, 10)
+		ctx.fillStyle = '#333333'
+		ctx.font = '16px Visitor'
+		ctx.textAlign = 'center'
+		ctx.fillText("#{player.exp} / #{player.expToLevel}", 150, 39)
+
+
+		ctx.fillStyle = 'white'
+		ctx.textAlign = 'center'
+		ctx.font = 'bold 40px Visitor'
+		ctx.fillText("lvl #{player.level}", c.width / 2, 40)
 
 		if @gameover
 			ctx.textAlign = 'center'
 			ctx.textBaseline = 'middle'
 			ctx.font = '120px Visitor'
+			ctx.fillStyle = 'white'
 			ctx.fillText("Game over", c.width / 2, c.height / 2)
 
 		if player.leveled and @powerups.length > 0

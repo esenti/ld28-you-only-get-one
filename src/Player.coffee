@@ -4,15 +4,23 @@ class Player extends Rect
 		@hp = 30
 		@maxHp = 30
 		@exp = 0
-		@expToLevel = 1000
+		@expToLevel = 800
 		@speed = 100
 		@animation = new Animation('player', 2)
 		@alive = 0
 		@leveled = false
+		@level = 1
+		@hooks = []
+		@fireRate = 2
+		@toShoot = 0
+		@bulletTtl = 1
+		@bulletPower = 3
+		@bulletSpeed = 150
 		super(@x, @y, 32, 32)
 
 	update: (delta) ->
 		@alive += delta
+		@toShoot -= delta
 
 		screenX = camera.transformX(@x) + 16
 		screenY = camera.transformY(@y) + 16
@@ -22,12 +30,19 @@ class Player extends Rect
 
 		@leveled = false
 		if @exp >= @expToLevel
+			sounds.levelUp.play()
 			@leveled = true
 			@exp = @exp - @expToLevel
-			@expToLevel = @expToLevel * 1.1
+			@expToLevel = @expToLevel + 100
+			@level += 1
+			@hp = @maxHp
 
-	hit: ->
-		@hp -= 1
+		for hook in @hooks
+			hook(this, delta)
+
+	hit: (power) ->
+		sounds.playerHurt.play()
+		@hp -= power
 
 	draw: (ctx) ->
 		ctx.save()
