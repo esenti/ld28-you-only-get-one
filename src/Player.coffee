@@ -13,7 +13,7 @@ class Player extends Rect
 		@hooks = []
 		@fireRate = 2
 		@toShoot = 0
-		@bulletTtl = 1
+		@bulletTtl = 1.5
 		@bulletPower = 3
 		@bulletSpeed = 150
 		@sight = 150
@@ -28,6 +28,7 @@ class Player extends Rect
 
 		@vec = new Vector(mouse.pos.x - screenX, mouse.pos.y - screenY)
 		@vec.normalize()
+		console.log mouse.pos.x
 
 		@leveled = false
 		if @exp >= @expToLevel
@@ -43,7 +44,8 @@ class Player extends Rect
 
 	hit: (power) ->
 		resourceManager.getSound('player_hurt.wav').play()
-		@hp -= power
+		@hp = Math.max(0, @hp - power)
+		window.shake = 0.5
 
 	draw: (ctx) ->
 		ctx.save()

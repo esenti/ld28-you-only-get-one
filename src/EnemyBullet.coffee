@@ -1,5 +1,5 @@
 class EnemyBullet extends Rect
-	constructor: (@x, @y, @dx, @dy) ->
+	constructor: (@x, @y, @dx, @dy, @power) ->
 		@ttl = 5
 		@speed = 300
 		super(@x, @y, 8, 8)
@@ -10,7 +10,7 @@ class EnemyBullet extends Rect
 		@.y += @.dy * delta * @speed
 
 		if @collidesWithRect(window.player)
-			window.player.hit(5)
+			window.player.hit(@power)
 			@remove = true
 
 		@ttl -= delta

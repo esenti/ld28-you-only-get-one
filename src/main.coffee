@@ -32,7 +32,7 @@ window.powerups = [
 	},
 	{
 		name: 'HP regen'
-		sprite: 'heart.png'
+		sprite: 'heart_half.png'
 		use: ->
 			toRegen = 10
 
@@ -51,27 +51,28 @@ window.powerups = [
 	},
 	{
 		name: '2x fire rate'
-		sprite: 'speed.png'
+		sprite: '2x.png'
 		use: ->
 			window.player.fireRate = window.player.fireRate * 2
 	},
 	{
 		name: 'stronger bullets'
-		sprite: 'speed.png'
+		sprite: 'bullet.png'
 		use: ->
 			window.player.bulletPower = window.player.bulletPower * 2
 	},
 	{
 		name: 'faster bullets'
-		sprite: 'speed.png'
+		sprite: 'fast_bullet.png'
 		use: ->
 			window.player.bulletSpeed = window.player.bulletSpeed * 2
+			window.player.bulletTtl = window.player.bulletTtl * 0.5
 	},
 	{
 		name: 'longer range'
-		sprite: 'speed.png'
+		sprite: 'range.png'
 		use: ->
-			window.player.bulletTtl = window.player.bulletTtl* 2
+			window.player.bulletTtl = window.player.bulletTtl * 2
 	},
 	{
 		name: 'better sight'
@@ -82,28 +83,28 @@ window.powerups = [
 	},
 ]
 
-addEventListener("keydown", (e) ->
+window.addEventListener("keydown", (e) ->
 	keysDown[e.keyCode] = true
 	console.log(e.keyCode)
 , false)
 
-addEventListener("keyup", (e) ->
+window.addEventListener("keyup", (e) ->
 	delete keysDown[e.keyCode]
 , false)
 
-addEventListener("mousemove", (e) ->
-	mouse.pos = {x: e.x, y: e.y}
+window.addEventListener("mousemove", (e) ->
+	mouse.pos = {x: e.clientX, y: e.clientY}
 )
 
-addEventListener("mousedown", (e) ->
+window.addEventListener("mousedown", (e) ->
 	mouse.down = true
 )
 
-addEventListener("mouseup", (e) ->
+window.addEventListener("mouseup", (e) ->
 	mouse.down = false
 )
 
-addEventListener("click", (e) ->
+window.addEventListener("click", (e) ->
 	mouse.click = true
 )
 
@@ -135,6 +136,8 @@ updateGradient = ->
 	window.grd.addColorStop(1, 'rgba(0, 0, 0, 1)')
 
 updateGradient()
+
+window.shake = 0
 
 camera =
 	x: 0
@@ -180,9 +183,9 @@ draw = (delta) ->
 
 	currentState.draw(ctx)
 
-	ctx.font = '46px Visitor'
-	ctx.fillStyle = '#aaaaaa'
-	ctx.fillText(fps, c.width - 80, 40)
+	# ctx.font = '46px Visitor'
+	# ctx.fillStyle = '#aaaaaa'
+	# ctx.fillText(fps, c.width - 80, 40)
 
 	ctx.restore()
 

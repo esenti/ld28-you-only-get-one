@@ -22,7 +22,7 @@ class Enemy extends Rect
 			resourceManager.getSound('enemy_dead.wav').play()
 			@remove = true
 			window.bodies.push(new Body(@x, @y, @deadSprite))
-			window.player.exp += 100
+			window.player.exp += 50
 
 		@alive += delta
 

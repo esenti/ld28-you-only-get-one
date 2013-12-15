@@ -16,8 +16,13 @@ class LoadingState extends State
 		resourceManager.registerImage('player_1.png')
 
 		resourceManager.registerImage('heart.png')
+		resourceManager.registerImage('heart_half.png')
 		resourceManager.registerImage('eye.png')
 		resourceManager.registerImage('speed.png')
+		resourceManager.registerImage('2x.png')
+		resourceManager.registerImage('bullet.png')
+		resourceManager.registerImage('fast_bullet.png')
+		resourceManager.registerImage('range.png')
 
 		resourceManager.registerSound('shoot.wav')
 		resourceManager.registerSound('enemy_hurt.wav')

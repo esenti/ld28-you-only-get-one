@@ -14,6 +14,11 @@ class MenuState extends State
 
 		ctx.textAlign = 'center'
 		ctx.textBaseline = 'middle'
+		ctx.font = '100px Visitor'
+		ctx.fillText("λ", c.width / 2, c.height / 2 - 200)
+
+		ctx.textAlign = 'center'
+		ctx.textBaseline = 'middle'
 		ctx.font = '52px Visitor'
 		ctx.fillText("Start", c.width / 2, c.height / 2)
 

@@ -9,6 +9,7 @@ class GameState extends State
 		window.bullets = []
 		window.enemies = []
 		window.player = new Player(0, 0)
+		window.shake = 0
 		@gameover = false
 		@powerups = []
 
@@ -111,6 +112,11 @@ class GameState extends State
 		camera.x = player.x + 16
 		camera.y = player.y + 16
 
+		if window.shake > 0
+			window.shake -= delta
+			camera.x += (Math.random() - 0.5) * 5
+			camera.y += (Math.random() - 0.5) * 5
+
 		if mouse.down
 			if player.toShoot <= 0
 
@@ -149,9 +155,14 @@ class GameState extends State
 	draw: (ctx) ->
 
 		dirt = resourceManager.getImage('dirt.png')
-		for i in [-15..15]
-			for j in [-10..10]
+
+		x_num = Math.floor(player.x / dirt.width)
+		y_num = Math.floor(player.y / dirt.height)
+
+		for i in [x_num - 3..x_num + 3]
+			for j in [y_num - 3..y_num + 3]
 				ctx.drawImage(dirt, camera.transformX(i * dirt.width), camera.transformY(j * dirt.height))
+
 
 
 		for body in window.bodies

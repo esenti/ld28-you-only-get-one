@@ -15,7 +15,7 @@ class ShootingEnemy extends Enemy
 			resourceManager.getSound('enemy_dead.wav').play()
 			@remove = true
 			window.bodies.push(new Body(@x, @y, @deadSprite))
-			window.player.exp += 200
+			window.player.exp += 100
 
 		@alive += delta
 
@@ -32,7 +32,7 @@ class ShootingEnemy extends Enemy
 			if @toHit <= 0
 				@toHit = 2
 				resourceManager.getSound('enemy_shoot.wav').play()
-				window.bullets.push(new EnemyBullet(@x + 16, @y + 16, @toPlayer.x, @toPlayer.y))
+				window.bullets.push(new EnemyBullet(@x + 16, @y + 16, @toPlayer.x, @toPlayer.y, 3 + Math.floor(player.level * 0.15)))
 		else
 			@toPlayer.normalize()
 
