@@ -85,7 +85,6 @@ window.powerups = [
 
 window.addEventListener("keydown", (e) ->
 	keysDown[e.keyCode] = true
-	console.log(e.keyCode)
 , false)
 
 window.addEventListener("keyup", (e) ->

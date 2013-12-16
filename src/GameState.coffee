@@ -164,7 +164,6 @@ class GameState extends State
 				ctx.drawImage(dirt, camera.transformX(i * dirt.width), camera.transformY(j * dirt.height))
 
 
-
 		for body in window.bodies
 			body.draw(ctx)
 
