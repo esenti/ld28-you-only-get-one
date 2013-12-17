@@ -161,7 +161,7 @@ class GameState extends State
 
 		for i in [x_num - 3..x_num + 3]
 			for j in [y_num - 3..y_num + 3]
-				ctx.drawImage(dirt, camera.transformX(i * dirt.width), camera.transformY(j * dirt.height))
+				ctx.drawImage(dirt, camera.transformX(i * (dirt.width - 1)), camera.transformY(j * (dirt.height - 1)))
 
 
 		for body in window.bodies
