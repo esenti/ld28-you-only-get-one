@@ -66,9 +66,6 @@ class Enemy extends Rect
 
 		if @hurt
 			@hurt = false
-			# ctx.beginPath()
-			# ctx.arc(camera.transformX(@x + 16), camera.transformY(@y + 16), 4, 0, Math.PI * 2)
-			# ctx.fill()
 
 		ctx.restore()
 
@@ -76,6 +73,7 @@ class Enemy extends Rect
 		@hurt = true
 		@hp -= power
 		if @hp > 0
+			resourceManager.getSound('enemy_hurt.wav').currentTime = 0
 			resourceManager.getSound('enemy_hurt.wav').play()
 			window.bodies.push(new Body(@x + 12, @y + 12, @bloodSprite))
 

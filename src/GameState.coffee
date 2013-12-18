@@ -36,6 +36,7 @@ class GameState extends State
 		if window.player.hp <= 0
 			if not @gameover
 				resourceManager.getSound('gameover.wav').play()
+				mouse.noclick = true
 			@gameover = true
 
 			if mouse.click
@@ -54,6 +55,8 @@ class GameState extends State
 				index = Math.round(Math.random() * (powerups.length - 1))
 				@powerups.push(powerups[index])
 				window.powerups.splice(index, 1)
+
+				mouse.noclick = true
 
 
 			if @powerups.length > 0
@@ -120,6 +123,7 @@ class GameState extends State
 		if mouse.down
 			if player.toShoot <= 0
 
+				resourceManager.getSound('shoot.wav').currentTime = 0
 				resourceManager.getSound('shoot.wav').play()
 				player.toShoot = 1 / player.fireRate
 				vec = new Vector(10, 0)

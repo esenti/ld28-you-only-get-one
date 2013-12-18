@@ -28,7 +28,6 @@ class Player extends Rect
 
 		@vec = new Vector(mouse.pos.x - screenX, mouse.pos.y - screenY)
 		@vec.normalize()
-		console.log mouse.pos.x
 
 		@leveled = false
 		if @exp >= @expToLevel
@@ -43,6 +42,7 @@ class Player extends Rect
 			hook(this, delta)
 
 	hit: (power) ->
+		resourceManager.getSound('player_hurt.wav').currentTime = 0
 		resourceManager.getSound('player_hurt.wav').play()
 		@hp = Math.max(0, @hp - power)
 		window.shake = 0.5

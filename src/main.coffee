@@ -97,14 +97,13 @@ window.addEventListener("mousemove", (e) ->
 
 window.addEventListener("mousedown", (e) ->
 	mouse.down = true
+	mouse.noclick = false
 )
 
 window.addEventListener("mouseup", (e) ->
 	mouse.down = false
-)
-
-window.addEventListener("click", (e) ->
-	mouse.click = true
+	if not mouse.noclick
+		mouse.click = true
 )
 
 window.resourceManager = new ResourceManager()
@@ -187,6 +186,19 @@ draw = (delta) ->
 	# ctx.fillText(fps, c.width - 80, 40)
 
 	ctx.restore()
+
+
+do ->
+    w = window
+    for vendor in ['ms', 'moz', 'webkit', 'o']
+        break if w.requestAnimationFrame
+        w.requestAnimationFrame = w["#{vendor}RequestAnimationFrame"]
+
+    if not w.requestAnimationFrame
+        targetTime = 0
+        w.requestAnimationFrame = (callback) ->
+            targetTime = Math.max targetTime + 16, currentTime = +new Date
+            w.setTimeout (-> callback +new Date), targetTime - currentTime
 
 
 update()

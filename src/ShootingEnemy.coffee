@@ -31,6 +31,7 @@ class ShootingEnemy extends Enemy
 			@toPlayer.normalize()
 			if @toHit <= 0
 				@toHit = 2
+				resourceManager.getSound('enemy_shoot.wav').currentTime = 0
 				resourceManager.getSound('enemy_shoot.wav').play()
 				window.bullets.push(new EnemyBullet(@x + 16, @y + 16, @toPlayer.x, @toPlayer.y, 3 + Math.floor(player.level * 0.15)))
 		else
